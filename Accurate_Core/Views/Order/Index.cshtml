@@ -1,0 +1,77 @@
+﻿@model Accurate_Core.Controllers.OrderViewModel
+<h1>Order History</h1>
+<div class="d-flex align-items-center justify-content-end">    
+    <a id="openModalBtn" class="btn btn-success">New Order <i class="bi bi-plus-circle"></i></a>
+</div>
+<div class="mt-2 p-3" id="container">
+  
+        <table id="orderTable" class="table border table-striped">
+            <thead class="bg-black text-white pt-2">
+                <tr>
+                    <th>
+                        Stock Number
+                    </th>
+                    <th>
+                        Descrition
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Tax Code
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.DbData)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.stockNum)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.taxCode)
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                          @*   <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Report</a> *@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+    </table>
+    
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-controller="Order" asp-action="Index" method="post" enctype="multipart/form-data">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">             
+                    <input type="file" name="file" />            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="sub" class="btn btn-success">Upload</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/js/orderdetails.js"></script>
+<link href="~/css/orderdetails.css" rel="stylesheet" />
