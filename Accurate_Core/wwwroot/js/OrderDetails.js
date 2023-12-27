@@ -1,10 +1,9 @@
-﻿var js = jQuery.noConflict(true);
-
-js(document).ready(function () {
-    js('#orderTable').DataTable();
+﻿/*var js = jQuery.noConflict(true);*/
+$(document).ready(function () {
+ 
+    $('#orderTable').DataTable();   
     $('#openModalBtn').click(function () {
-        $('#exampleModal').modal('show')
+        $('#exampleModal').modal('show');
         $('#exampleModalLabel').text("Upload");
     });
-   
 });

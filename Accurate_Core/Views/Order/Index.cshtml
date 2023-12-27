@@ -1,4 +1,26 @@
-﻿@model Accurate_Core.Controllers.OrderViewModel
+﻿@model Accurate_Core.ViewModel.OrderViewModel
+<!-- Add this at the beginning of the view to display alert messages -->
+@if (TempData["ErrorMessage"] != null || TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-dismissible fade show mt-3" role="alert">
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <h1>Order History</h1>
 <div class="d-flex align-items-center justify-content-end">    
     <a id="openModalBtn" class="btn btn-success">New Order <i class="bi bi-plus-circle"></i></a>
@@ -65,7 +87,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="sub" class="btn btn-success">Upload</button>
+                <button type="submit" class="btn btn-success">Upload</button>
             </div>
         </form>
         </div>
@@ -75,3 +97,4 @@
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/js/orderdetails.js"></script>
 <link href="~/css/orderdetails.css" rel="stylesheet" />
+
