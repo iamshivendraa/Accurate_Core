@@ -33,7 +33,6 @@ namespace Accurate_Core.Controllers
             return View(viewModel);
         }
 
-
         [HttpPost]
         public IActionResult Index(IFormFile file, [FromServices] Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment)
         {
@@ -114,11 +113,13 @@ namespace Accurate_Core.Controllers
         // Function to check if the price has a valid format (000.00)
         private static bool IsValidPriceFormat(string price)
         {
-            decimal result;
-            return decimal.TryParse(price, out result) && result >= 0; // Assuming prices are non-negative
+            
+            string pricePattern = @"^\d{3}\.\d{2}$";
+
+            return Regex.IsMatch(price, pricePattern);
         }
 
-        private List<ExcelSample> GetExcelDataList(string fName)
+            private List<ExcelSample> GetExcelDataList(string fName)
         {
             List<ExcelSample> excelData = new List<ExcelSample>();
             var fileName = $"{Directory.GetCurrentDirectory()}{@"\wwwroot\files"}" + "\\" + fName;
@@ -143,7 +144,7 @@ namespace Accurate_Core.Controllers
                                 description = reader.GetValue(1)?.ToString(),
                                 price = reader.GetValue(2).ToString(),
                                 taxCode = reader.GetValue(3)?.ToString()
-                             });
+                            });
                         }
                     }
                 }
@@ -151,7 +152,5 @@ namespace Accurate_Core.Controllers
 
             return excelData;
         }
-
-       
     }
 }
