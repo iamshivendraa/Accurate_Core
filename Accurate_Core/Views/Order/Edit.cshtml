@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Accurate_Core.Models.OrderSummary>
+<div class="mt-2 p-3" id="container">
+    <!-- Add search input box -->
+    <div class="d-flex mb-2" id="searchContainer">
+        <div class="w-75">
+            <input type="text" class="form-control" id="searchInput" placeholder="Scan barcode or enter stock number" onclick="openModal()">
+        </div>
+        <div class="d-flex align-items-center mx-5 gap-1">
+            <label class="mr-3">Matched Only:</label>
+            <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider round"></span>
+            </label>
+        </div>
+    </div>
+
+    <table id="editTable" class="table border table-striped">
+        <thead class="bg-black text-white pt-2">
+            <tr>
+                <th>Stock Number</th>
+                <th>Vehicle</th>
+                <th>VIN</th>
+                <th>Location</th>
+                <th>Price</th>
+                <th>Matched</th>
+                <th>Grade</th>
+                <th>Graded Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Populate table rows dynamically based on data -->
+            @foreach(var obj in Model){
+            <tr>
+                <td>@obj.StockNumber</td>
+                <td>@obj.Vehicle</td>
+                <td>@obj.Vin</td>
+                <td>@obj.Location</td>
+                <td>@obj.Price</td>
+                <td>
+                        @if (obj.Matched ?? false)
+                        {
+                            <i class="fa-solid fa-check" style="color:green"></i>
+                        }
+                </td>
+                <td>@obj.Grade</td>
+                <td>@obj.GradePrice</td>
+            </tr>
+            }
+            <!-- Add more rows as needed -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Add modal HTML at the end of your code -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel"></h5>
+                <span type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
+                </span>
+            </div>
+            <div class="modal-body">
+                <!-- Add your modal content here -->
+                This is the modal content.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Don't Save</button>
+                <button type="button" class="btn btn-success">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/js/orderdetails.js"></script>
+<link href="~/css/edit.css" rel="stylesheet" />
+
+
+

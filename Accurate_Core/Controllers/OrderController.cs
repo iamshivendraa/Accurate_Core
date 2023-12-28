@@ -78,11 +78,11 @@ namespace Accurate_Core.Controllers
                 }
 
                 // Check price format (000.00)
-                if (!IsValidPriceFormat(data.price))
-                {
-                    TempData["ErrorMessage"] = $"Invalid price format. Price should be in the format 000.00.";
-                    return RedirectToAction(nameof(Index));
-                }
+                //if (!IsValidPriceFormat(data.price))
+                //{
+                //    TempData["ErrorMessage"] = $"Invalid price format. Price should be in the format 000.00.";
+                //    return RedirectToAction(nameof(Index));
+                //}
 
                 _db.ExcelData.Add(data);
             }
@@ -111,15 +111,15 @@ namespace Accurate_Core.Controllers
         }
 
         // Function to check if the price has a valid format (000.00)
-        private static bool IsValidPriceFormat(string price)
-        {
-            
-            string pricePattern = @"^\d{3}\.\d{2}$";
+        //private static bool IsValidPriceFormat(string price)
+        //{
+        //    //string pricePattern = @"^\d{3}(\.\d{2})?$";
+        //    string pricePattern = @"^\d{3}\.\d{2}$";
 
-            return Regex.IsMatch(price, pricePattern);
-        }
+        //    return Regex.IsMatch(price, pricePattern);
+        //}
 
-            private List<ExcelSample> GetExcelDataList(string fName)
+        private List<ExcelSample> GetExcelDataList(string fName)
         {
             List<ExcelSample> excelData = new List<ExcelSample>();
             var fileName = $"{Directory.GetCurrentDirectory()}{@"\wwwroot\files"}" + "\\" + fName;
@@ -152,5 +152,12 @@ namespace Accurate_Core.Controllers
 
             return excelData;
         }
+        public IActionResult Edit()
+        {
+            var orderList = _db.OrderSummaries.ToList();
+            return View(orderList);
+        }
+
     }
+
 }
