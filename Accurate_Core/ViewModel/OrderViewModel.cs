@@ -1,4 +1,4 @@
-﻿using Accurate_Core.Models;
+﻿﻿using Accurate_Core.Models;
 
 namespace Accurate_Core.ViewModel
 {

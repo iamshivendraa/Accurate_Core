@@ -1,4 +1,4 @@
-﻿@model Accurate_Core.ViewModel.OrderViewModel
+﻿@model IEnumerable<Accurate_Core.Models.ExcelSample>
 <!-- Add this at the beginning of the view to display alert messages -->
 @if (TempData["ErrorMessage"] != null || TempData["SuccessMessage"] != null)
 {
@@ -28,7 +28,7 @@
 <div class="mt-2 p-3" id="container">
 
     <table id="orderTable" class="table border table-striped">
-        <thead class="bg-black text-white pt-2">
+        <thead class="text-white pt-2">
             <tr>
                 <th>
                     Stock Number
@@ -48,7 +48,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.DbData)
+            @foreach (var item in Model)
             {
                 <tr>
                     <td>
@@ -64,34 +64,18 @@
                         @Html.DisplayFor(modelItem => item.taxCode)
                     </td>
                     <td>
-                        <a class="btn btn-primary" asp-action="Edit" ><i class="bi bi-pencil-square"></i></a>
+                        <a class="btn btn-secondary" asp-action="Edit" ><i class="bi bi-pencil-square"></i></a>
                         @*   <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Report</a> *@
                     </td>
                 </tr>
+
             }
         </tbody>
     </table>
 
 </div>
-
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form asp-controller="Order" asp-action="Index" method="post" enctype="multipart/form-data">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="file" name="file" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Upload</button>
-                </div>
-            </form>
-        </div>
-    </div>
+<div id="addOrderModalPartial">
+     <partial name="_OrderModal" model="Model" />
 </div>
 
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>

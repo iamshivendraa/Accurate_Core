@@ -24,15 +24,15 @@ namespace Accurate_Core.App_Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ExcelDatum>(entity =>
+            modelBuilder.Entity<ExcelSample>(entity =>
             {
-                entity.Property(e => e.Description).HasColumnName("description");
+                entity.Property(e => e.description).HasColumnName("description");
 
-                entity.Property(e => e.Price).HasColumnName("price");
+                entity.Property(e => e.price).HasColumnName("price");
 
-                entity.Property(e => e.StockNum).HasColumnName("stockNum");
+                entity.Property(e => e.stockNum).HasColumnName("stockNum");
 
-                entity.Property(e => e.TaxCode).HasColumnName("taxCode");
+                entity.Property(e => e.taxCode).HasColumnName("taxCode");
             });
 
             modelBuilder.Entity<OrderSummary>(entity =>

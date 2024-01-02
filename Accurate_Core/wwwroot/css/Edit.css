@@ -2,11 +2,11 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     height:80vh;
 }
-#searchContainer{
-    background-color:black;
-    padding:8px;
-    color:white;
-    border-radius:10px;
+#searchContainer {
+    background-color: #03396c;
+    padding: 8px;
+    color: white;
+    border-radius: 10px;
 }
 .switch {
     position: relative;
@@ -70,4 +70,12 @@ input:checked + .slider:before {
 
 .dataTables_filter,.dataTables_length {
     display:none;
+}
+
+#modalHeader{
+    background-color: #03396c;
+    color: white;
+}
+thead {
+    background-color: #03396c;
 }

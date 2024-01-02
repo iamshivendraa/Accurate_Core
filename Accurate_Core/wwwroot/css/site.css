@@ -17,3 +17,13 @@ body {
     margin-bottom: 60px;
     font-family: 'Afacad', sans-serif;
 }
+.navbar {
+    background-color: #03396c;
+    
+}
+.container-fluid a{
+    color:white;
+}
+footer {
+    background-color: #92d2f9;
+}

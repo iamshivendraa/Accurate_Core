@@ -1,36 +1,35 @@
 ﻿var js = jQuery.noConflict(true);
-
+Dropzone.autoDiscover = false;
 js(document).ready(function () {
-    js('#orderTable').DataTable();
     var table = js('#editTable').DataTable();
+    var searchTimer;
+    var searchInput = $("#searchInput");
+    
 
-    // Variable to store the timer for opening the modal
-    var modalTimer;
-
-    $("#searchInput").on("keyup", function () {
-        // Use DataTables search API to filter rows
-        table.search(this.value).draw();
-
+    searchInput.on("input", function () {
         // Clear the previous timer
-        clearTimeout(modalTimer);
+        clearTimeout(searchTimer);
 
-        // Check if the entered stock number is found in the table
-        var enteredStockNumber = this.value;
-        var isMatchFound = isStockNumberMatch(enteredStockNumber);
+        // Set a timer to start searching after 2 seconds of inactivity
+        searchTimer = setTimeout(function () {
+            // Use DataTables search API to filter rows
+            table.search(searchInput.val(), false, true); 
+            // Check if the entered stock number is found in the table
+            var enteredStockNumber = searchInput.val();
+            var isMatchFound = isStockNumberMatch(enteredStockNumber);
 
-        if (isMatchFound) {
-            // Set a new timer to open the modal after 2 seconds
-            modalTimer = setTimeout(function (stockNumber) {
-                openModalWithText('Match Found on "' + stockNumber + '"');
-            }, 2000, enteredStockNumber);
-        }
+            if (isMatchFound) {
+               
+                openModalWithText('Match Found on "' + enteredStockNumber + '"');
+            }
+        }, 2000);
     });
 
     js('#openModalBtn').click(function () {
         $('#exampleModal').modal('show');
         $('#exampleModalLabel').text("Upload");
-    });
 
+    });
     function openModalWithText(text) {
         $('#myModal').modal('show');
         $('#myModalLabel').text(text);
@@ -44,3 +43,5 @@ js(document).ready(function () {
         return stockNumbers.includes(enteredStockNumber);
     }
 });
+  
+

@@ -1,0 +1,23 @@
+﻿<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <form id="myDropzone" asp-controller="Order" asp-action="Index" method="post" enctype="multipart/form-data">
+                <div class="modal-header" style="background-color:#03396c; color: white;">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <span type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></span>
+                </div>
+                <div class="modal-body">
+                     <input type="file" name="file" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success" id="submit-button">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/js/orderdetails.js"></script>
+<link href="~/css/orderdetails.css" rel="stylesheet" />

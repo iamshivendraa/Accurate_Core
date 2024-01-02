@@ -28,9 +28,10 @@ namespace Accurate_Core.Controllers
 
             // Retrieve data from the database
             var dbData = _db.ExcelData.ToList();
-            // Pass both Excel data and database data to the view
-            var viewModel = new OrderViewModel { ExcelData = excelData, DbData = dbData };
-            return View(viewModel);
+            excelData.AddRange(dbData); // Add the database data to the existing list
+
+            // Pass the list of Excel samples directly to the view
+            return View(dbData);
         }
 
         [HttpPost]
@@ -77,12 +78,12 @@ namespace Accurate_Core.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
-                // Check price format (000.00)
-                //if (!IsValidPriceFormat(data.price))
-                //{
-                //    TempData["ErrorMessage"] = $"Invalid price format. Price should be in the format 000.00.";
-                //    return RedirectToAction(nameof(Index));
-                //}
+                //Check price format(000.00)
+                if (!IsValidPriceFormat(data.price))
+                {
+                    TempData["ErrorMessage"] = $"Invalid price format. Price should be in the numeric format.";
+                    return RedirectToAction(nameof(Index));
+                }
 
                 _db.ExcelData.Add(data);
             }
@@ -111,13 +112,13 @@ namespace Accurate_Core.Controllers
         }
 
         // Function to check if the price has a valid format (000.00)
-        //private static bool IsValidPriceFormat(string price)
-        //{
-        //    //string pricePattern = @"^\d{3}(\.\d{2})?$";
-        //    string pricePattern = @"^\d{3}\.\d{2}$";
+        private static bool IsValidPriceFormat(string price)
+        {
+            //string pricePattern = @"^\d{3}(\.\d{2})?$";
+            string pricePattern = @"^\d+$";
 
-        //    return Regex.IsMatch(price, pricePattern);
-        //}
+            return Regex.IsMatch(price, pricePattern);
+        }
 
         private List<ExcelSample> GetExcelDataList(string fName)
         {
@@ -155,9 +156,29 @@ namespace Accurate_Core.Controllers
         public IActionResult Edit()
         {
             var orderList = _db.OrderSummaries.ToList();
+
+          
             return View(orderList);
         }
 
-    }
+        [HttpPost]
+        public IActionResult EditOrderSummary(OrderSummary model)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.OrderSummaries.Update(model);
+                _db.SaveChanges();
 
+                // Create an instance of EditViewModel and populate its properties
+                var orderList = _db.OrderSummaries.ToList();
+                var viewModel = new EditViewModel { OrderList = orderList, OrderSummary = model };
+
+                return View("Edit", viewModel);
+            }
+
+            // ModelState is not valid, return the view with the same model
+            return View("Edit", new EditViewModel { OrderList = _db.OrderSummaries.ToList(), OrderSummary = model });
+        }
+
+    }
 }
