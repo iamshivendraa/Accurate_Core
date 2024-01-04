@@ -2,12 +2,8 @@
 using Accurate_Core.Models;
 using ExcelDataReader;
 using Accurate_Core.ViewModel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; // Add this namespace for Entity Framework
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Accurate_Core.Controllers
@@ -37,66 +33,80 @@ namespace Accurate_Core.Controllers
         [HttpPost]
         public IActionResult Index(IFormFile file, [FromServices] Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment)
         {
-            if (file == null || file.Length == 0)
+
+            try
             {
-                TempData["ErrorMessage"] = "Please upload a file.";
-                return RedirectToAction(nameof(Index));
-            }
-            string fileName = $"{hostingEnvironment.WebRootPath}\\files\\{file.FileName}";
-
-            using (FileStream fileStream = System.IO.File.Create(fileName))
-            {
-                file.CopyTo(fileStream);
-                fileStream.Flush();
-            }
-
-            var excelData = GetExcelDataList(file.FileName);
-
-            // Check for duplicate combinations of stock numbers and descriptions between (CUN) and Catalytic Converter
-            var duplicateRecords = excelData.GroupBy(x => new { x.stockNum, DescriptionKey = GetTextBetweenCUNAndCatalyticConverter(x.description) })
-                                            .Where(g => g.Count() > 1)
-                                            .Select(g => new { StockNum = g.Key.stockNum, DescriptionKey = g.Key.DescriptionKey })
-                                            .ToList();
-
-            if (duplicateRecords.Any())
-            {
-                TempData["ErrorMessage"] = $"Duplicate combinations found. Stock numbers and descriptions between (CUN) and Catalytic Converter must be unique. First duplicate combination: Stock Number: {duplicateRecords.First().StockNum}, Description: {duplicateRecords.First().DescriptionKey}";
-
-                return RedirectToAction(nameof(Index));
-            }
-
-            // Check for existing combinations of stock numbers and descriptions between (CUN) and Catalytic Converter in the database
-            var existingRecords = _db.ExcelData.Select(x => new { x.stockNum, DescriptionKey = GetTextBetweenCUNAndCatalyticConverter(x.description) }).ToList();
-
-            foreach (var data in excelData)
-            {
-                // Check if the combination of stock number and description already exists in the database
-                if (existingRecords.Any(x => x.stockNum == data.stockNum && x.DescriptionKey == GetTextBetweenCUNAndCatalyticConverter(data.description)))
+                if (file == null || file.Length == 0)
                 {
-                    // Display a message about the first duplicate record found
-                    TempData["ErrorMessage"] = $"Order with stock number '{data.stockNum}' and description '{data.description}' already exists.";
+                    TempData["ErrorMessage"] = "Please upload a file.";
+                    return RedirectToAction(nameof(Index));
+                }
+                string fileName = $"{hostingEnvironment.WebRootPath}\\files\\{file.FileName}";
+
+                using (FileStream fileStream = System.IO.File.Create(fileName))
+                {
+                    file.CopyTo(fileStream);
+                    fileStream.Flush();
+                }
+
+                var excelData = GetExcelDataList(file.FileName);
+
+                // Check for duplicate combinations of stock numbers and descriptions between (CUN) and Catalytic Converter
+                var duplicateRecords = excelData.GroupBy(x => new { x.stockNum, DescriptionKey = GetTextBetweenCUNAndCatalyticConverter(x.description) })
+                                                .Where(g => g.Count() > 1)
+                                                .Select(g => new { StockNum = g.Key.stockNum, DescriptionKey = g.Key.DescriptionKey })
+                                                .ToList();
+
+                if (duplicateRecords.Any())
+                {
+                    TempData["ErrorMessage"] = $"Duplicate combinations found. Stock numbers and descriptions between (CUN) and Catalytic Converter must be unique. First duplicate combination: Stock Number: {duplicateRecords.First().StockNum}, Description: {duplicateRecords.First().DescriptionKey}";
+
                     return RedirectToAction(nameof(Index));
                 }
 
-                //Check price format(000.00)
-                if (!IsValidPriceFormat(data.price))
+                // Check for existing combinations of stock numbers and descriptions between (CUN) and Catalytic Converter in the database
+                var existingRecords = _db.ExcelData.Select(x => new { x.stockNum, DescriptionKey = GetTextBetweenCUNAndCatalyticConverter(x.description) }).ToList();
+
+                foreach (var data in excelData)
                 {
-                    TempData["ErrorMessage"] = $"Invalid price format. Price should be in the numeric format.";
-                    return RedirectToAction(nameof(Index));
+                    // Check if the combination of stock number and description already exists in the database
+                    if (existingRecords.Any(x => x.stockNum == data.stockNum && x.DescriptionKey == GetTextBetweenCUNAndCatalyticConverter(data.description)))
+                    {
+                        // Display a message about the first duplicate record found
+                        TempData["ErrorMessage"] = $"Order with stock number '{data.stockNum}' and description '{data.description}' already exists.";
+                        return RedirectToAction(nameof(Index));
+                    }
+
+                    //Check price format(000.00)
+                    if (!IsValidPriceFormat(data.price))
+                    {
+                        TempData["ErrorMessage"] = $"Invalid price format. Price should be in the numeric format.";
+                        return RedirectToAction(nameof(Index));
+                    }
+
+                    _db.ExcelData.Add(data);
                 }
 
-                _db.ExcelData.Add(data);
+                _db.SaveChanges();
+
+                // Retrieve data from the database
+                var dbData = _db.ExcelData.ToList();
+
+                // Pass both Excel data and database data to the view
+                TempData.Remove("ErrorMessage");
+                TempData.Remove("SuccessMessage"); // Clear TempData here
+
+                // Pass both Excel data and database data to the view
+                excelData.AddRange(dbData);
+                return Json(new { success = true, data = excelData });
+
             }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, errorMessage = ex.Message });
 
-            _db.SaveChanges();
-
-            // Retrieve data from the database
-            var dbData = _db.ExcelData.ToList();
-
-            // Pass both Excel data and database data to the view
-            TempData.Remove("ErrorMessage");
-            TempData.Remove("SuccessMessage"); // Clear TempData here
-            return View(new OrderViewModel { ExcelData = excelData, DbData = dbData });
+            }
+            
         }
 
         // Function to extract text between (CUN) and Catalytic Converter

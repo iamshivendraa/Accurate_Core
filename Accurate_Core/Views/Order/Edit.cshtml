@@ -8,7 +8,7 @@
         <div class="d-flex align-items-center mx-5 gap-1">
             <label class="mr-3">Matched Only:</label>
             <label class="switch">
-                <input type="checkbox" checked>
+                <input type="checkbox" id="matchedToggle"checked>
                 <span class="slider round"></span>
             </label>
         </div>
@@ -32,7 +32,7 @@
             <!-- Populate table rows dynamically based on data -->
             @foreach (var obj in Model)
             {
-            <tr>
+                <tr class="data-row">
                 <td>@obj.StockNumber</td>
                 <td>@obj.Vehicle</td>
                 <td>@obj.Vin</td>
@@ -58,6 +58,5 @@
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/js/orderdetails.js"></script>
 <link href="~/css/edit.css" rel="stylesheet" />
-
 
 
