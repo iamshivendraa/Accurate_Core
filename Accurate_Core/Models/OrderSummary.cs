@@ -38,6 +38,11 @@ namespace Accurate_Core.Models
                 new SelectListItem { Value = "GRADE 3", Text = "GRADE 3" }
             };
         }
+        public void UpdateGradeFields(string grade, string gradePrice)
+        {
+            Grade = grade;
+            GradePrice = gradePrice;
+        }
     }
 
    

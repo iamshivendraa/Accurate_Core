@@ -106,7 +106,7 @@ namespace Accurate_Core.Controllers
                 return Json(new { success = false, errorMessage = ex.Message });
 
             }
-            
+
         }
 
         // Function to extract text between (CUN) and Catalytic Converter
@@ -166,28 +166,40 @@ namespace Accurate_Core.Controllers
         public IActionResult Edit()
         {
             var orderList = _db.OrderSummaries.ToList();
-
-          
             return View(orderList);
         }
 
         [HttpPost]
-        public IActionResult EditOrderSummary(OrderSummary model)
+        public IActionResult Edit(string stockNumber, string grade, string gradePrice)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _db.OrderSummaries.Update(model);
+                // Find the corresponding OrderSummary by StockNumber
+                var orderSummary = _db.OrderSummaries.FirstOrDefault(o => o.StockNumber == stockNumber);
+
+                if (orderSummary == null)
+                {
+                    TempData["ErrorMessage"] = "Order summary not found.";
+                    return Json(new { success = false, errorMessage = TempData["ErrorMessage"] });
+                }
+
+               
+               
+                orderSummary.UpdateGradeFields(grade, gradePrice);
+
+                // Save changes to the database
                 _db.SaveChanges();
+                
+                TempData["SuccessMessage"] = "Grade information updated successfully.";
+                
+                return Json(new { success = true });
 
-                // Create an instance of EditViewModel and populate its properties
-                var orderList = _db.OrderSummaries.ToList();
-                var viewModel = new EditViewModel { OrderList = orderList, OrderSummary = model };
-
-                return View("Edit", viewModel);
             }
-
-            // ModelState is not valid, return the view with the same model
-            return View("Edit", new EditViewModel { OrderList = _db.OrderSummaries.ToList(), OrderSummary = model });
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Error updating grade information: {ex.Message}";
+                return Json(new { success = false, errorMessage = TempData["ErrorMessage"] });
+            }
         }
 
     }

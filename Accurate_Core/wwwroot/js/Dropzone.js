@@ -22,9 +22,7 @@ var myDropzone = new Dropzone("#myDropzone", {
                 
             }
             myDropzone.removeAllFiles(true);
-            
-
-            
+                      
         }
     }
 });
@@ -33,11 +31,11 @@ $(document).ready(function () {
         $('#closeButton').on("click",function () {
             $('#exampleModal').modal('hide');
             myDropzone.removeAllFiles(true);
+            $('.alert-danger').hide();
 
         });
 
         $('#submitButton').on("click", function () {
-
             myDropzone.processQueue();
         });
 });

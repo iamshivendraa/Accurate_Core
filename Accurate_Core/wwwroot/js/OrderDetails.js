@@ -84,7 +84,7 @@ js(document).ready(function () {
 
     });
     function openModalWithText(text) {
-        $('#myModal').modal('show');
+        $('#editGradeModal').modal('show');
         $('#myModalLabel').text(text);
     }
 
@@ -119,6 +119,7 @@ js(document).ready(function () {
     });
 
     // Initial setup
+
     
 });
 

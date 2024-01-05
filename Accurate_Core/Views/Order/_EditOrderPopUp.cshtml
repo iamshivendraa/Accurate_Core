@@ -1,6 +1,6 @@
 ﻿
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="editGradeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header" id="modalHeader">
@@ -9,35 +9,40 @@
                     <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
                 </span>
             </div>
-            <form method="post" asp-action="EditOrderSummary">
+            <!-- ... -->
+            <form method="post" asp-action="EditOrderSummary" id="editGradeForm">
                 <div class="modal-body">
-                    <input type="hidden"  />
-                    <div class="modal-body">
-                        <div class="mb-2">
-                            <label for="gradeInput" class="form-label">Grade:</label>
-                            <select class="form-select" id="gradeInput" >
-                                <option value="">Select Grade</option>
-                            </select>
-                            <span class="text-danger" ></span>
-                        </div>
-                        <div class="mb-2">
-                            <label for="priceInput" class="form-label">Price:</label>
-                            <input type="text" class="form-control" id="priceInput" >
-                            <span class="text-danger" ></span>
-                        </div>
+                    <input type="hidden" id="stockNumberInput" name="StockNumber" />
+
+                    <div class="mb-2">
+                        <label for="gradeInput" class="form-label">Grade:</label>
+                        <select class="form-select" id="gradeInput">
+                            <option value="">Select Grade</option>
+                            <option value="GRADE 1">Grade 1</option>
+                            <option value="GRADE 2">Grade 2</option>
+                            <option value="GRADE 3">Grade 3</option>
+                        </select>
+                        <span class="text-danger"></span>
                     </div>
 
                     <div class="mb-2">
-                        <span class="text-danger" ></span>
-                        <span class="text-danger" ></span>
+                        <label for="gradePriceInput" class="form-label">Grade Price:</label>
+                        <input type="text" class="form-control" id="gradePriceInput" name="GradePrice">
+                        <span class="text-danger"></span>
                     </div>
-
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Don't Save</button>
-                    <button type="submit" class="btn btn-success">Save</button>
+
+                <div class="mb-2">
+                    <span class="text-danger"></span>
+                    <span class="text-danger"></span>
                 </div>
             </form>
+            <!-- ... -->
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Don't Save</button>
+                    <button type="submit" class="btn btn-success" onclick="saveGradeInfo()">Save</button>
+                </div>
 
         </div>
     </div>
@@ -45,5 +50,5 @@
 
 
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="~/js/orderdetails.js"></script>
+<script src="~/js/edit.js"></script>
 <link href="~/css/edit.css" rel="stylesheet" />

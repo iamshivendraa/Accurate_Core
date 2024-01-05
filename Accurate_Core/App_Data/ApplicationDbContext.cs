@@ -46,5 +46,11 @@ namespace Accurate_Core.App_Data
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public async Task UpdateOrderSummary(string stockNumber, string grade, string gradePrice)
+        {
+            await Database.ExecuteSqlRawAsync("EXEC UpdateOrderSummary @p0, @p1, @p2", stockNumber, grade, gradePrice);
+        }
     }
+
 }

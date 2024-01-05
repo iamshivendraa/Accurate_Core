@@ -5,7 +5,7 @@
            
                 <div class="modal-header" style="background-color:#03396c; color: white;">
                     <h5 class="modal-title" id="exampleModalLabel"></h5>
-                    <span type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></span>
+                    <span type="button" id="closeButton" aria-label="Close"><i class="fa-solid fa-xmark"></i></span>
                 </div>
                 <div class="modal-body">             
                 <form id="myDropzone" action="/Order/Index" class="dropzone" method="post" enctype="multipart/form-data">
@@ -14,34 +14,13 @@
                     </div>
                   
                 </form>
-
                     <div class="alert alert-danger mt-2" role="alert">
-                        @TempData["ErrorMessage"]
+                        
                     </div>
-               @*  @if (TempData["ErrorMessage"] != null || TempData["SuccessMessage"] != null)
-                {
-                    <div class="alert alert-dismissible fade show mt-3" role="alert">
-                        @if (TempData["ErrorMessage"] != null)
-                        {
-                            <div class="alert alert-danger" role="alert">
-                                @TempData["ErrorMessage"]
-                            </div>
-                        }
-
-                        @if (TempData["SuccessMessage"] != null)
-                        {
-                            <div class="alert alert-success" role="alert">
-                                @TempData["SuccessMessage"]
-                            </div>
-                        }
-
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                } *@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" id="closeButton">Close</button>
-                    <button class="btn btn-success" id="submitButton">Upload</button>
+                    <button class="btn btn-success" type="submit" id="submitButton">Upload</button>
                 </div>
         </div>
     </div>
