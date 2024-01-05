@@ -12,7 +12,32 @@
                     <div class="fallback">
                         <input name="file" type="file" accept=".xls, .xlsx"/>
                     </div>
-                </form>                
+                  
+                </form>
+
+                    <div class="alert alert-danger mt-2" role="alert">
+                        @TempData["ErrorMessage"]
+                    </div>
+               @*  @if (TempData["ErrorMessage"] != null || TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-dismissible fade show mt-3" role="alert">
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                @TempData["ErrorMessage"]
+                            </div>
+                        }
+
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success" role="alert">
+                                @TempData["SuccessMessage"]
+                            </div>
+                        }
+
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                } *@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" id="closeButton">Close</button>
@@ -25,3 +50,4 @@
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/js/Dropzone.js"></script>
 <link href="~/css/orderdetails.css" rel="stylesheet" />
+

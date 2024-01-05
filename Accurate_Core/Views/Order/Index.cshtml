@@ -1,25 +1,6 @@
 ﻿@model IEnumerable<Accurate_Core.Models.ExcelSample>
 <!-- Add this at the beginning of the view to display alert messages -->
-@if (TempData["ErrorMessage"] != null || TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-dismissible fade show mt-3" role="alert">
-        @if (TempData["ErrorMessage"] != null)
-        {
-            <div class="alert alert-danger" role="alert">
-                @TempData["ErrorMessage"]
-            </div>
-        }
 
-        @if (TempData["SuccessMessage"] != null)
-        {
-            <div class="alert alert-success" role="alert">
-                @TempData["SuccessMessage"]
-            </div>
-        }
-
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
 
 <h1>Order History</h1>
 <div class="d-flex align-items-center justify-content-end">
@@ -81,5 +62,4 @@
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/js/orderdetails.js"></script>
 <link href="~/css/orderdetails.css" rel="stylesheet" />
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+

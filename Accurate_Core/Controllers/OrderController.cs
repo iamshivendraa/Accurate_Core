@@ -39,7 +39,7 @@ namespace Accurate_Core.Controllers
                 if (file == null || file.Length == 0)
                 {
                     TempData["ErrorMessage"] = "Please upload a file.";
-                    return RedirectToAction(nameof(Index));
+                    return Json(new { success = false, errorMessage = TempData["ErrorMessage"] });
                 }
                 string fileName = $"{hostingEnvironment.WebRootPath}\\files\\{file.FileName}";
 
@@ -61,7 +61,7 @@ namespace Accurate_Core.Controllers
                 {
                     TempData["ErrorMessage"] = $"Duplicate combinations found. Stock numbers and descriptions between (CUN) and Catalytic Converter must be unique. First duplicate combination: Stock Number: {duplicateRecords.First().StockNum}, Description: {duplicateRecords.First().DescriptionKey}";
 
-                    return RedirectToAction(nameof(Index));
+                    return Json(new { success = false, errorMessage = TempData["ErrorMessage"] });
                 }
 
                 // Check for existing combinations of stock numbers and descriptions between (CUN) and Catalytic Converter in the database
@@ -74,14 +74,14 @@ namespace Accurate_Core.Controllers
                     {
                         // Display a message about the first duplicate record found
                         TempData["ErrorMessage"] = $"Order with stock number '{data.stockNum}' and description '{data.description}' already exists.";
-                        return RedirectToAction(nameof(Index));
+                        return Json(new { success = false, errorMessage = TempData["ErrorMessage"] });
                     }
 
                     //Check price format(000.00)
                     if (!IsValidPriceFormat(data.price))
                     {
                         TempData["ErrorMessage"] = $"Invalid price format. Price should be in the numeric format.";
-                        return RedirectToAction(nameof(Index));
+                        return Json(new { success = false, errorMessage = TempData["ErrorMessage"] });
                     }
 
                     _db.ExcelData.Add(data);
@@ -94,7 +94,7 @@ namespace Accurate_Core.Controllers
 
                 // Pass both Excel data and database data to the view
                 TempData.Remove("ErrorMessage");
-                TempData.Remove("SuccessMessage"); // Clear TempData here
+                TempData.Remove("SuccessMessage");
 
                 // Pass both Excel data and database data to the view
                 excelData.AddRange(dbData);

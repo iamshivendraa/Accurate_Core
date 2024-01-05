@@ -5,7 +5,7 @@ var myDropzone = new Dropzone("#myDropzone", {
     acceptedFiles: ".xlsx, .xls",
     autoProcessQueue: false,
     success: function (file, response) {
-
+        
         if (response.success) {
             // Hide the modal on successful upload
             $('#exampleModal').modal('hide');
@@ -16,20 +16,27 @@ var myDropzone = new Dropzone("#myDropzone", {
             alert("File Successfully Uploaded!");
 
         } else {
-            $('#exampleModal').modal('hide');
+            var errorMessage = response.errorMessage;
+            if (errorMessage) {
+                $('.alert-danger').text(errorMessage).show();
+                
+            }
             myDropzone.removeAllFiles(true);
-            alert("Plese check your file!");
+            
+
+            
         }
     }
 });
 $(document).ready(function () {
-        js('#closeButton').on("click",function () {
+        $('.alert-danger').hide();
+        $('#closeButton').on("click",function () {
             $('#exampleModal').modal('hide');
             myDropzone.removeAllFiles(true);
 
         });
 
-        js('#submitButton').on("click", function () {
+        $('#submitButton').on("click", function () {
 
             myDropzone.processQueue();
         });
