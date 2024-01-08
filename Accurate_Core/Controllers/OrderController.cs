@@ -1,7 +1,6 @@
 ﻿using Accurate_Core.App_Data;
 using Accurate_Core.Models;
 using ExcelDataReader;
-using Accurate_Core.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Text.RegularExpressions;

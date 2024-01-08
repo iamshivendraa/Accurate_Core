@@ -29,21 +29,6 @@ namespace Accurate_Core.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult upload()
-        {
-
-            for (int i = 0; i < Request.Form.Files.Count; i++)
-            {
-                var file = Request.Form.Files[i];
-                // Process and save the file to the database
-                SaveFileToDatabase(file);
-            }
-            return Json(new { Message = "Files uploaded successfully." });
-        }
-
-        private void SaveFileToDatabase(IFormFile? file)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }
